@@ -1,0 +1,25 @@
+from snakemake.utils import min_version
+min_version("6.0.0")
+onstart:
+    print("##### ChIP-seq and RNA-seq workflows #####\n") 
+    print("\t Reading samples and metadata....\n")
+    
+#! RNA Seq Module
+module RNASeq:
+    snakefile:
+        "../RNASeq/Snakefile-RNASeq"
+## This instruction should come right after the module
+use rule * from RNASeq as RNASeq_*
+
+#! Chip Seq Module
+module ChIPSeq:
+    snakefile:
+        "../ChIPSeq/Snakefile-ChIPSeq"
+## This instruction should come right after the module
+use rule * from ChIPSeq as ChIPSeq_*
+
+#! All rules
+rule all:
+    input:
+        rules.RNASeq_all.input,
+        rules.ChIPSeq_all.input
