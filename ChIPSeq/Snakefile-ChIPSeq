@@ -1,0 +1,19 @@
+# Load pipeline: snakemake --profile profileChIPSeq/ -n
+onstart:
+    print("##### ChIPSeq workflow #####\n") 
+    print("\t Creating jobs output subfolders...\n")
+    shell("mkdir -p jobs/mockAlignment")
+    shell("mkdir -p jobs/mockpeakDetection")
+#########
+# Variable definition
+########
+FILESNAMES=["exp1", "exp2"]
+#########
+# Rules
+########
+rule all:
+    input:
+        expand("results/alignment/{sampleName}.bam", sampleName=FILESNAMES),
+        expand("results/peaks/{sampleName}.peaks", sampleName=FILESNAMES)
+include: "external_rules/mockrule.smk"
+include: "external_rules/callscript.smk"
