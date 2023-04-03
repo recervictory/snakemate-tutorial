@@ -1,0 +1,9 @@
+latency-wait: "60"
+use-conda: True
+keep-going: True
+restart-times: 1
+jobs: 20
+cluster: "qsub-submit.py"
+cluster-status: "qsub-status.py"
+jobscript: "qsub-jobscript.sh"
+local-cores: 1
