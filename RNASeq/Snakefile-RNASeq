@@ -1,0 +1,19 @@
+# Load pipeline: snakemake --profile profileRNASeq/ -n
+onstart:
+    print("##### RNASeq workflow #####\n") 
+    print("\t Creating jobs output subfolders...\n")
+    shell("mkdir -p jobs/mockFeatureCounts")
+    shell("mkdir -p jobs/mockDifferentialAnalysis")
+#########
+# Variable definition
+########
+FILESNAMES=["exp1", "exp2"]
+#########
+# Rules
+########
+rule all:
+    input:
+        expand("results/featureCounts/{sampleName}.txt", sampleName=FILESNAMES),
+        expand("results/differentialAnalysis/{sampleName}.csv", sampleName=FILESNAMES)
+include: "external_rules/mockrule.smk"
+include: "external_rules/callscript.smk"
