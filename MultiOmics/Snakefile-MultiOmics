@@ -8,7 +8,7 @@ module RNASeq:
     snakefile:
         "../RNASeq/Snakefile-RNASeq"
     config:
-        config["RNASeq"]
+        config["RNASeq"]  # Config File 
         
 ## This instruction should come right after the module
 use rule * from RNASeq as RNASeq_*
@@ -17,7 +17,7 @@ module ChIPSeq:
     snakefile:
         "../ChIPSeq/Snakefile-ChIPSeq"
     config:
-        config["RNASeq"]
+        config["RNASeq"] # Config File 
         
 ## This instruction should come right after the module
 use rule * from ChIPSeq as ChIPSeq_*

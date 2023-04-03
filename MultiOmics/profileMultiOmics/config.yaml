@@ -1,0 +1,38 @@
+# SnakeMake configurations
+snakefile: Snakefile-MultiOmics
+latency-wait: 60
+reason: True
+show-failed-logs: True
+keep-going: True
+printshellcmds: True
+configfile: "config.yaml"
+
+
+# Cluster submission
+jobname: "{rule}.{jobid}"              # Provide a custom name for the jobscript that is submitted to the cluster.
+max-jobs-per-second: 1                 #Maximal number of cluster/drmaa jobs per second, default is 10, fractions allowed.
+max-status-checks-per-second: 10       #Maximal number of job status checks per second, default is 10
+jobs: 400                              #Use at most N CPU cluster/cloud jobs in parallel.
+cluster: "sbatch --output=\"jobs/{rule}/slurm_%x_%j.out\" --error=\"jobs/{rule}/slurm_%x_%j.log\" --mem={resources.mem_mb} --time={resources.runtime} --parsable"
+cluster-status: "./profileMultiOmics/status-sacct.sh" #  Use to handle timeout exception, do not forget to chmod +x
+
+# Job resources
+set-resources:
+  - RNASeq_mockFeatureCounts:mem_mb=1000
+  - RNASeq_mockFeatureCounts:runtime=00:03:00
+  - RNASeq_mockDifferentialAnalysis:mem_mb=1000
+  - RNASeq_mockDifferentialAnalysis:runtime=00:03:00
+  - ChIPSeq_mockAlignment:mem_mb=1000
+  - ChIPSeq_mockAlignment:runtime=00:03:00
+  - ChIPSeq_mockpeakDetection:mem_mb=1000
+  - ChIPSeq_mockpeakDetection:runtime=00:03:00
+# For some reasons time needs quotes to be read by snakemake
+default-resources:
+  - mem_mb=500
+  - runtime="00:01:00"
+# Define the number of threads used by rules
+set-threads:
+  - RNASeq_mockFeatureCounts=1
+  - RNASeq_mockDifferentialAnalysis=1
+  - ChIPSeq_mockAlignment=1
+  - ChIPSeq_mockpeakDetection=1
